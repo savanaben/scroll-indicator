@@ -199,8 +199,9 @@
 
 <div class="version-controls">
     <button id="version1Btn" class="version-btn active">Current More/Top</button>
+    <button id="version3Btn" class="version-btn">More Only (Top removed)</button>
     <button id="version2Btn" class="version-btn">Fade-out</button>
-    <button id="version3Btn" class="version-btn">More Only</button>
+    
 </div>
 
 <script>
@@ -252,7 +253,10 @@
                         }
                     } else if (!completedTopAction) {
                         // Only handle scroll positions if we haven't completed a top action
-                        if (window.innerHeight + scrollTop >= document.documentElement.scrollHeight - 20) {
+                         // the 0 controls offset
+                           // if set to a number, more will change to top x number before the bottom
+                          //of the panel
+                        if (window.innerHeight + scrollTop >= document.documentElement.scrollHeight - 1) {
                             // At the bottom of the page
                             isTopButtonActive = true;
                             topBtn.style.display = 'block';
@@ -364,8 +368,10 @@
                 moreBtn.style.display = 'block';
                 moreBtn.classList.remove('fade-out');
 
-                // Hide More button only when we reach the bottom
-                if (window.innerHeight + scrollTop >= document.documentElement.scrollHeight - 20) {
+                // Hide More button only when we reach the bottom the 0 controls offset
+                // if set to a number, more will change to top x number before the bottom
+                //of the panel
+                if (window.innerHeight + scrollTop >= document.documentElement.scrollHeight - 1) {
                     moreBtn.classList.add('fade-out');
                 }
             },
@@ -381,8 +387,10 @@
             handleScroll: function() {
                 let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
                 
-                // Only handle visibility when reaching bottom
-                if (window.innerHeight + scrollTop >= document.documentElement.scrollHeight - 20) {
+                 // Hide More button only when we reach the bottom the 0 controls offset
+                // if set to a number, more will change to top x number before the bottom
+                //of the panel
+                if (window.innerHeight + scrollTop >= document.documentElement.scrollHeight - 1) {
                     moreBtn.classList.add('fade-out');
                 }
             }
