@@ -14,7 +14,7 @@
     }
     .content {
         min-height: 100px;
-        padding: 30px;
+        padding: 30px 30px 0px 30px;
     }
 
     textarea {
@@ -41,7 +41,12 @@
         border-radius: 50%;
         cursor: pointer;
         opacity: 0.85;
-        transition: opacity 0.3s ease-out;
+        transition: opacity 0.2s ease-out, bottom .03s ease-out;
+    }
+
+    /* Modifier class for shifted position */
+    .floating-btn.shifted-up {
+        bottom: 86px;
     }
 
     /* Specific button colors/variations */
@@ -120,6 +125,154 @@
         top: 20px;
         z-index: 1000;
     }
+
+    /* Styles for MCQ View */
+    #toggleMcqViewBtn {
+        position: fixed;
+        left: 110px;
+        top: 51px;
+        padding: 10px 20px;
+  
+        background-color: #ffffff; /* A different color to distinguish */
+        color: rgb(52, 90, 203);
+        border: 1px solid rgb(92, 92, 92);
+        border-radius: 5px;
+        cursor: pointer;
+        z-index: 1000;
+    }
+
+    #mcqContent {
+        padding: 30px 30px 0px 30px;
+  
+       
+    }
+
+    .mcq-option {
+        margin-bottom: 11.4px;
+        padding: 0;
+        border: 1px solid #adb5bd;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        background-color: #fff;
+        overflow: hidden;
+    }
+
+    .mcq-option-letter-radio {
+        display: flex;
+        align-items: center;
+        padding: 14px 15px;
+        background-color:rgb(214, 235, 255);
+        border-right: 1px solid #dee2e6;
+    }
+
+    .mcq-option-letter {
+        font-weight: bold;
+        margin-right: 12px;
+      
+    }
+
+    .mcq-option-radio-visual {
+        width: 18px;
+        height: 18px;
+        border: 2px solid #000;
+        border-radius: 50%;
+        display: inline-block;
+        position: relative;
+    }
+
+    .mcq-option-text {
+        flex-grow: 1;
+        padding: 14px 15px;
+    }
+
+    .eliminate-choice-btn {
+        background-color: white;
+        border: none; /* Remove inner border */
+        border-radius: 0; /* No border radius for the button itself */
+        width: 53px; /* Wider to match image */
+        /* height: 100%; */ /* Let flex control height based on parent */
+        font-size: 20px; /* Larger minus symbol - applies to dash */
+        /* line-height: 50px; */ /* Removed, flex will center */
+        /* text-align: center; */ /* Removed, flex will center */
+        cursor: pointer;
+        margin-left: 0; /* Remove left margin */
+        flex-shrink: 0;
+        align-self: stretch; /* Make it stretch to full height of mcq-option */
+        display: flex; /* Added for centering wrapper */
+        align-items: center; /* Added for centering wrapper */
+        justify-content: center; /* Added for centering wrapper */
+    }
+
+    .ec-dash-wrapper {
+        width: 22px;
+        height: 22px;
+        border: 1px solid #676767; /* Match dash color, slightly thicker */
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1; /* Ensure dash is centered well in small circle */
+    }
+
+    .eliminate-choice-btn:hover {
+        background-color: #e9ecef;
+    }
+
+    .dimmed-choice {
+        opacity: 0.5;
+        background-color: #f8f9fa;
+    }
+
+    .dimmed-choice .mcq-option-letter-radio {
+        background-color: #dbe6f0;
+    }
+
+    .dimmed-choice .eliminate-choice-btn {
+        background-color: #e9ecef;
+        color: #adb5bd;
+        cursor: not-allowed;
+    }
+
+    #clearAnswerBtn {
+    box-sizing: border-box;
+    min-width: 0px;
+    position: relative;
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    font-family: Calibri;
+    line-height: 1;
+    font-size: calc(22px);
+    z-index: 200;
+    padding-left: calc(12px);
+    padding-right: calc(12px);
+    padding-top: calc(8px);
+    padding-bottom: calc(8px);
+    color: rgb(36, 120, 204);
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(144, 144, 144);
+    margin-top:19px;
+    gap: calc(8px);
+    transition: background 0.2s, border-color 0.2s, box-shadow 0.2s, color 0.2s;
+    border-radius: calc(4px);
+    border-color: rgb(144, 144, 144);
+    }
+
+    #clearAnswerBtn:hover {
+        background-color: #f8f9fa;
+    }
+
+    /* Submit button area styling adjustment if needed */
+    .submit-container {
+        padding: 23px 30px 30px 30px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 9px;
+    }
 </style>
 </head>
 <body>
@@ -140,11 +293,56 @@
         <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
         
         <textarea style="height: 250px;"></textarea>
+    </div>
 
-        <div style="display: flex; justify-content: flex-end; align-items: center; gap: 9px; margin-top: 20px;">
-            <span>Select <strong>Submit</strong> when you are finished.</span>
-            <button style="background-color: #2478cc; font-size: 22.8px; color: white; border: none; padding: 11px 30px; border-radius: 4px; cursor: pointer;">Submit</button>
+    <div id="mcqContent" style="display: none;">
+        <h1 style="text-align: center;">More/Top Demos</h1>
+        <h2 style="text-align: center;">Make the window smaller if needed to show More button.</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+        <p>Lorem ipor incididunt ut laboim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    
+        <div class="mcq-options-container">
+            <div class="mcq-option" data-option-id="a">
+                <div class="mcq-option-letter-radio">
+                    <span class="mcq-option-letter">A</span>
+                    <span class="mcq-option-radio-visual"></span>
+                </div>
+                <span class="mcq-option-text">Midnight</span>
+                <button class="eliminate-choice-btn" title="Eliminate this choice"><span class="ec-dash-wrapper">–</span></button>
+            </div>
+            <div class="mcq-option" data-option-id="b">
+                <div class="mcq-option-letter-radio">
+                    <span class="mcq-option-letter">B</span>
+                    <span class="mcq-option-radio-visual"></span>
+                </div>
+                <span class="mcq-option-text">Cocoa</span>
+                <button class="eliminate-choice-btn" title="Eliminate this choice"><span class="ec-dash-wrapper">–</span></button>
+            </div>
+            <div class="mcq-option" data-option-id="c">
+                <div class="mcq-option-letter-radio">
+                    <span class="mcq-option-letter">C</span>
+                    <span class="mcq-option-radio-visual"></span>
+                </div>
+                <span class="mcq-option-text">Buttons</span>
+                <button class="eliminate-choice-btn" title="Eliminate this choice"><span class="ec-dash-wrapper">–</span></button>
+            </div>
+            <div class="mcq-option" data-option-id="d">
+                <div class="mcq-option-letter-radio">
+                    <span class="mcq-option-letter">D</span>
+                    <span class="mcq-option-radio-visual"></span>
+                </div>
+                <span class="mcq-option-text">Speedy</span>
+                <button class="eliminate-choice-btn" title="Eliminate this choice"><span class="ec-dash-wrapper">–</span></button>
+            </div>
         </div>
+        <button id="clearAnswerBtn">Clear Answer</button>
+    </div>
+
+    <div class="submit-container">
+        <span>Select <strong>Submit</strong> when you are finished.</span>
+        <button id="submitBtn" style="background-color: #2478cc; font-size: 22.8px; color: white; border: none; padding: 11px 30px; border-radius: 4px; cursor: pointer;">Submit</button>
     </div>
 
 <input style="width: 210px" type="number" id="heightControl" value="" placeholder="Set content area height in pixels" title="Set content height in pixels">
@@ -201,73 +399,95 @@
     <button id="version1Btn" class="version-btn active">Current More/Top</button>
     <button id="version3Btn" class="version-btn">More Only (Top removed)</button>
     <button id="version2Btn" class="version-btn">Fade-out</button>
+    <button id="version4Btn" class="version-btn">Shift Up</button>
+    <button id="version5Btn" class="version-btn">Disappear on Overlap</button>
+    <button id="version6Btn" class="version-btn">Shift up on Overlap</button>
     
 </div>
+
+<button id="toggleMcqViewBtn">Toggle Item View</button>
 
 <script>
     const version1Btn = document.getElementById('version1Btn');
     const version2Btn = document.getElementById('version2Btn');
     const version3Btn = document.getElementById('version3Btn');
+    const version4Btn = document.getElementById('version4Btn');
+    const version5Btn = document.getElementById('version5Btn');
+    const version6Btn = document.getElementById('version6Btn');
+    const toggleMcqViewBtn = document.getElementById('toggleMcqViewBtn');
+    const originalContentDiv = document.getElementById('content');
+    const mcqContentDiv = document.getElementById('mcqContent');
+    let mcqViewActive = false;
 
     document.addEventListener('DOMContentLoaded', function() {
         const content = document.getElementById('content');
         const moreBtn = document.getElementById('moreBtn');
         const regenerateBtn = document.getElementById('regenerateBtn');
         const heightControl = document.getElementById('heightControl');
-        const toggleVersionBtn = document.getElementById('toggleVersionBtn');
         const topBtn = document.getElementById('topBtn');
+        const submitBtn = document.getElementById('submitBtn');
 
         let lastScrollTop = window.scrollY;
         let currentVersion = 1;
-        let moreButtonHiddenByScroll = false;
         let isTopButtonActive = false;
         let completedTopAction = false;
         let version2ButtonUsed = false;
+        let version5ButtonHiddenDueToOverlap = false;
+        let v6IsShiftedDueToOverlap = false;
 
+        function checkOverlap(elem1, elem2) {
+            if (!elem1 || !elem2 || window.getComputedStyle(elem1).display === 'none' || window.getComputedStyle(elem2).display === 'none') {
+                return false;
+            }
+            const rect1 = elem1.getBoundingClientRect();
+            const rect2 = elem2.getBoundingClientRect();
+            const noOverlap = rect1.right < rect2.left ||
+                              rect1.left > rect2.right ||
+                              rect1.bottom < rect2.top ||
+                              rect1.top > rect2.bottom;
+            return !noOverlap;
+        }
+
+        function getBaseButtonDisplayState(contentElement, currentScrollY, windowHeight, docScrollHeight, currentIsTopButtonActive, currentCompletedTopAction) {
+            let showMore = false;
+            let showTop = false;
+            let nextIsTopButtonActive = currentIsTopButtonActive;
+            let nextCompletedTopAction = currentCompletedTopAction;
+
+            if (currentScrollY === 0) {
+                if (nextIsTopButtonActive) {
+                    nextIsTopButtonActive = false;
+                    nextCompletedTopAction = true;
+                } else if (!nextCompletedTopAction) {
+                    if (docScrollHeight > windowHeight + 1) {
+                        showMore = true;
+                    }
+                }
+            } else if (!nextCompletedTopAction) {
+                if (windowHeight + currentScrollY >= docScrollHeight - 1) {
+                    nextIsTopButtonActive = true;
+                    showTop = true;
+                } else if (nextIsTopButtonActive) {
+                    showTop = true;
+                } else {
+                    showMore = true;
+                }
+            }
+            return { showMore, showTop, nextIsTopButtonActive, nextCompletedTopAction };
+        }
 
         const buttonBehaviors = {
             version1: {
                 updateVisibility: function() {
-                    let actualHeight = content.scrollHeight - parseFloat(window.getComputedStyle(content).paddingTop);
-                    let viewportHeight = window.innerHeight;
-                    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+                    const baseState = getBaseButtonDisplayState(content, scrollY, window.innerHeight, document.documentElement.scrollHeight, isTopButtonActive, completedTopAction);
                     
-                    // Always show regenerate button
-                    regenerateBtn.style.display = 'block';
-                    
-                    // Hide More and Top buttons by default
-                    moreBtn.style.display = 'none';
-                    topBtn.style.display = 'none';
+                    isTopButtonActive = baseState.nextIsTopButtonActive;
+                    completedTopAction = baseState.nextCompletedTopAction;
 
-                    if (scrollTop === 0) {
-                        // At the top of the page
-                        if (isTopButtonActive) {
-                            // If we were showing Top button, hide it and prevent it from showing again
-                            isTopButtonActive = false;
-                            completedTopAction = true;
-                        } else if (!completedTopAction) {
-                            // Only show More if we haven't completed a top action
-                            if (actualHeight > viewportHeight) {
-                                moreBtn.style.display = 'block';
-                            }
-                        }
-                    } else if (!completedTopAction) {
-                        // Only handle scroll positions if we haven't completed a top action
-                         // the 0 controls offset
-                           // if set to a number, more will change to top x number before the bottom
-                          //of the panel
-                        if (window.innerHeight + scrollTop >= document.documentElement.scrollHeight - 1) {
-                            // At the bottom of the page
-                            isTopButtonActive = true;
-                            topBtn.style.display = 'block';
-                        } else if (isTopButtonActive) {
-                            // Show Top button if it's active
-                            topBtn.style.display = 'block';
-                        } else {
-                            // Show More button if no other conditions are met
-                            moreBtn.style.display = 'block';
-                        }
-                    }
+                    moreBtn.style.display = baseState.showMore ? 'block' : 'none';
+                    topBtn.style.display = baseState.showTop ? 'block' : 'none';
+                    regenerateBtn.style.display = 'block';
                 },
                 
                 scrollBehavior: function() {
@@ -283,121 +503,234 @@
                 }
             },
             
+            version2: {
+                updateVisibility: function() {
+                    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+                    const baseState = getBaseButtonDisplayState(content, scrollY, window.innerHeight, document.documentElement.scrollHeight, isTopButtonActive, completedTopAction);
 
-            
-        version2: {
-            updateVisibility: function() {
-                // Always show regenerate button
-                regenerateBtn.style.display = 'block';
+                    isTopButtonActive = baseState.nextIsTopButtonActive;
+                    completedTopAction = baseState.nextCompletedTopAction;
+
+                    moreBtn.style.display = baseState.showMore ? 'block' : 'none';
+                    topBtn.style.display = baseState.showTop ? 'block' : 'none';
+                    regenerateBtn.style.display = 'block';
+                },
                 
-                // Hide top button
-                topBtn.style.display = 'none';
-                
-                // Only show More button if it hasn't been used yet
-                if (!version2ButtonUsed) {
-                    moreBtn.style.display = 'block';
-                    moreBtn.classList.remove('fade-out');
-                } else {
-                    moreBtn.style.display = 'none';
+                scrollBehavior: function() {
+                    const currentScroll = window.pageYOffset;
+                    const targetScroll = currentScroll + 150;
+                    
+                    const startTime = performance.now();
+                    const duration = 800;
+
+                    function easeOutCubic(t) {
+                        return 1 - Math.pow(1 - t, 3);
+                    }
+
+                    function scrollAnimation(currentTime) {
+                        const elapsed = currentTime - startTime;
+                        const progress = Math.min(elapsed / duration, 1);
+                        
+                        const eased = easeOutCubic(progress);
+                        const currentPosition = currentScroll + (targetScroll - currentScroll) * eased;
+                        
+                        window.scrollTo(0, currentPosition);
+                        
+                        if (progress < 1) {
+                            requestAnimationFrame(scrollAnimation);
+                        }
+                    }
+
+                    requestAnimationFrame(scrollAnimation);
+                    
+                    version2ButtonUsed = true;
+                    moreBtn.classList.add('fade-out');
+                },
+
+                handleScroll: function() {
+                    const currentScrollY = window.scrollY;
+                    
+                    if (currentScrollY > lastScrollTop) {
+                        moreBtn.classList.add('fade-out');
+                        version2ButtonUsed = true;
+                    }
+                    
+                    lastScrollTop = currentScrollY;
                 }
             },
-            
-            scrollBehavior: function() {
-                const currentScroll = window.pageYOffset;
-                const targetScroll = currentScroll + 150;
+            version3: {
+                updateVisibility: function() {
+                    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+                    const baseState = getBaseButtonDisplayState(content, scrollY, window.innerHeight, document.documentElement.scrollHeight, isTopButtonActive, completedTopAction);
+
+                    isTopButtonActive = baseState.nextIsTopButtonActive;
+                    completedTopAction = baseState.nextCompletedTopAction;
+
+                    moreBtn.style.display = baseState.showMore ? 'block' : 'none';
+                    topBtn.style.display = baseState.showTop ? 'block' : 'none';
+                    regenerateBtn.style.display = 'block';
+                },
                 
-                // Smooth scroll with easing
-                const startTime = performance.now();
-                const duration = 800; // milliseconds
+                scrollBehavior: function() {
+                    window.scrollTo({
+                        left: 0,
+                        top: document.body.scrollHeight,
+                        behavior: 'smooth'
+                    });
+                },
 
-                function easeOutCubic(t) {
-                    return 1 - Math.pow(1 - t, 3);
-                }
-
-                function scrollAnimation(currentTime) {
-                    const elapsed = currentTime - startTime;
-                    const progress = Math.min(elapsed / duration, 1);
+                handleScroll: function() {
+                    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
                     
-                    const eased = easeOutCubic(progress);
-                    const currentPosition = currentScroll + (targetScroll - currentScroll) * eased;
-                    
-                    window.scrollTo(0, currentPosition);
-                    
-                    if (progress < 1) {
-                        requestAnimationFrame(scrollAnimation);
+                    if (window.innerHeight + scrollTop >= document.documentElement.scrollHeight - 1) {
+                        moreBtn.classList.add('fade-out');
                     }
                 }
-
-                requestAnimationFrame(scrollAnimation);
-                
-                // Mark button as used after click
-                version2ButtonUsed = true;
-                moreBtn.classList.add('fade-out');
             },
+            version4: {
+                updateVisibility: function() { 
+                    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+                    const baseState = getBaseButtonDisplayState(content, scrollY, window.innerHeight, document.documentElement.scrollHeight, isTopButtonActive, completedTopAction);
 
-            handleScroll: function() {
-                const currentScrollY = window.scrollY;  // Get current scroll position
-                
-                // If we scrolled down (current Y is greater than last Y)
-                if (currentScrollY > lastScrollTop) {
-                    moreBtn.classList.add('fade-out');
-                    version2ButtonUsed = true;
+                    isTopButtonActive = baseState.nextIsTopButtonActive;
+                    completedTopAction = baseState.nextCompletedTopAction;
+
+                    moreBtn.style.display = baseState.showMore ? 'block' : 'none';
+                    topBtn.style.display = baseState.showTop ? 'block' : 'none';
+                    regenerateBtn.style.display = 'block';
+                },
+                scrollBehavior: function() {
+                    window.scrollTo({
+                        left: 0,
+                        top: document.body.scrollHeight,
+                        behavior: 'smooth'
+                    });
+                },
+                handleScroll: function() {
+                    this.updateVisibility();
                 }
-                
-                // Store current position for next comparison
-                lastScrollTop = currentScrollY;
+            },
+            version5: {
+                updateVisibility: function() {
+                    regenerateBtn.style.display = 'block';
+
+                    if (version5ButtonHiddenDueToOverlap) {
+                        moreBtn.style.display = 'none';
+                        topBtn.style.display = 'none';
+                        return;
+                    }
+
+                    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+                    const baseState = getBaseButtonDisplayState(content, scrollY, window.innerHeight, document.documentElement.scrollHeight, isTopButtonActive, completedTopAction);
+
+                    isTopButtonActive = baseState.nextIsTopButtonActive;
+                    completedTopAction = baseState.nextCompletedTopAction;
+
+                    let displayMore = baseState.showMore;
+                    let displayTop = baseState.showTop;
+
+                    moreBtn.style.display = 'none';
+                    topBtn.style.display = 'none';
+
+                    let overlapped = false;
+                    if (displayMore) {
+                        moreBtn.style.display = 'block';
+                        if (checkOverlap(moreBtn, submitBtn)) {
+                            moreBtn.style.display = 'none';
+                            overlapped = true;
+                        }
+                    }
+                    
+                    if (displayTop) {
+                        if (overlapped) {
+                            topBtn.style.display = 'none';
+                        } else {
+                            topBtn.style.display = 'block';
+                            if (checkOverlap(topBtn, submitBtn)) {
+                                topBtn.style.display = 'none';
+                                overlapped = true;
+                            }
+                        }
+                    }
+
+                    if (overlapped) {
+                        version5ButtonHiddenDueToOverlap = true;
+                    }
+                },
+                scrollBehavior: function() {
+                    window.scrollTo({
+                        left: 0,
+                        top: document.body.scrollHeight,
+                        behavior: 'smooth'
+                    });
+                },
+                handleScroll: function() {
+                    this.updateVisibility();
+                }
+            },
+            version6: {
+                updateVisibility: function() {
+                    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+                    const baseState = getBaseButtonDisplayState(content, scrollY, window.innerHeight, document.documentElement.scrollHeight, isTopButtonActive, completedTopAction);
+
+                    isTopButtonActive = baseState.nextIsTopButtonActive;
+                    completedTopAction = baseState.nextCompletedTopAction;
+
+                    moreBtn.style.display = baseState.showMore ? 'block' : 'none';
+                    topBtn.style.display = baseState.showTop ? 'block' : 'none';
+                    
+                    let activeFloatingBtn = null;
+                    if (baseState.showMore) activeFloatingBtn = moreBtn;
+                    else if (baseState.showTop) activeFloatingBtn = topBtn;
+
+                    if (!activeFloatingBtn) {
+                        if (v6IsShiftedDueToOverlap) {
+                           moreBtn.classList.remove('shifted-up');
+                           topBtn.classList.remove('shifted-up');
+                        }
+                        v6IsShiftedDueToOverlap = false;
+                        regenerateBtn.style.display = 'block';
+                        return;
+                    }
+
+                    const SHIFT_AMOUNT_PX = 33;
+                    const overlapsNow = checkOverlap(activeFloatingBtn, submitBtn);
+
+                    if (v6IsShiftedDueToOverlap) { 
+                        const floatingBtnRect = activeFloatingBtn.getBoundingClientRect();
+                        const submitBtnRect = submitBtn.getBoundingClientRect();
+                        const currentGap = submitBtnRect.top - floatingBtnRect.bottom;
+
+                        if (!overlapsNow && currentGap > SHIFT_AMOUNT_PX) {
+                            activeFloatingBtn.classList.remove('shifted-up');
+                            v6IsShiftedDueToOverlap = false;
+                        } else {
+                            activeFloatingBtn.classList.add('shifted-up');
+                        }
+                    } else {
+                        if (overlapsNow) {
+                            activeFloatingBtn.classList.add('shifted-up');
+                            v6IsShiftedDueToOverlap = true;
+                        } else {
+                            v6IsShiftedDueToOverlap = false; 
+                        }
+                    }
+                    
+                    regenerateBtn.style.display = 'block';
+                },
+                scrollBehavior: function() {
+                    window.scrollTo({
+                        left: 0,
+                        top: document.body.scrollHeight,
+                        behavior: 'smooth'
+                    });
+                },
+                handleScroll: function() {
+                    this.updateVisibility();
+                }
             }
-        },
-  
+        };
 
-
-
-            version3: {
-            updateVisibility: function() {
-                // Always show regenerate button
-                regenerateBtn.style.display = 'block';
-                
-                // Hide top button
-                topBtn.style.display = 'none';
-                
-                let actualHeight = content.scrollHeight - parseFloat(window.getComputedStyle(content).paddingTop);
-                let viewportHeight = window.innerHeight;
-                let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                
-                // Show More button by default
-                moreBtn.style.display = 'block';
-                moreBtn.classList.remove('fade-out');
-
-                // Hide More button only when we reach the bottom the 0 controls offset
-                // if set to a number, more will change to top x number before the bottom
-                //of the panel
-                if (window.innerHeight + scrollTop >= document.documentElement.scrollHeight - 1) {
-                    moreBtn.classList.add('fade-out');
-                }
-            },
-            
-            scrollBehavior: function() {
-                window.scrollTo({
-                    left: 0,
-                    top: document.body.scrollHeight,
-                    behavior: 'smooth'
-                });
-            },
-
-            handleScroll: function() {
-                let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                
-                 // Hide More button only when we reach the bottom the 0 controls offset
-                // if set to a number, more will change to top x number before the bottom
-                //of the panel
-                if (window.innerHeight + scrollTop >= document.documentElement.scrollHeight - 1) {
-                    moreBtn.classList.add('fade-out');
-                }
-            }
-        }
-    };
-
-        //  click handler for top button
         topBtn.addEventListener('click', function() {
             if (currentVersion === 1) {
                 window.scrollTo({
@@ -408,77 +741,118 @@
             }
         });
 
-    //  switchVersion function
-    function switchToVersion(versionNumber) {
-        currentVersion = versionNumber;
-        
-        //  button states
-        version1Btn.classList.toggle('active', versionNumber === 1);
-        version2Btn.classList.toggle('active', versionNumber === 2);
-        version3Btn.classList.toggle('active', versionNumber === 3);
-        
-        // Reset all states
-        moreButtonHiddenByScroll = false;
-        isTopButtonActive = false;
-        completedTopAction = false;
-        version2ButtonUsed = false;
-        lastScrollTop = window.scrollY;
-        
-        // Remove fade-out class when switching versions
-        moreBtn.classList.remove('fade-out');
-        
-        updateButtonVisibility();
-    }
+        function switchToVersion(versionNumber) {
+            currentVersion = versionNumber;
+            
+            version1Btn.classList.toggle('active', versionNumber === 1);
+            version2Btn.classList.toggle('active', versionNumber === 2);
+            version3Btn.classList.toggle('active', versionNumber === 3);
+            version4Btn.classList.toggle('active', versionNumber === 4);
+            version5Btn.classList.toggle('active', versionNumber === 5);
+            version6Btn.classList.toggle('active', versionNumber === 6);
 
+            moreBtn.classList.remove('shifted-up');
+            topBtn.classList.remove('shifted-up');
+            moreBtn.classList.remove('fade-out');
 
+            if (versionNumber === 4) {
+                moreBtn.classList.add('shifted-up');
+                topBtn.classList.add('shifted-up');
+            }
+            
+            isTopButtonActive = false;
+            completedTopAction = false;
+            version2ButtonUsed = false;
+            version5ButtonHiddenDueToOverlap = false;
+            v6IsShiftedDueToOverlap = false;
+            lastScrollTop = window.scrollY;
+            
+            updateButtonVisibility();
+        }
 
+        function updateButtonVisibility() {
+            const behavior = currentVersion === 1 ? buttonBehaviors.version1 : 
+                            currentVersion === 2 ? buttonBehaviors.version2 :
+                            currentVersion === 3 ? buttonBehaviors.version3 :
+                            currentVersion === 4 ? buttonBehaviors.version4 :
+                            currentVersion === 5 ? buttonBehaviors.version5 :
+                            buttonBehaviors.version6;
+            if (behavior && typeof behavior.updateVisibility === 'function') {
+                behavior.updateVisibility();
+            }
+        }
 
-    function updateButtonVisibility() {
-        const behavior = currentVersion === 1 ? buttonBehaviors.version1 : 
-                        currentVersion === 2 ? buttonBehaviors.version2 :
-                        buttonBehaviors.version3;
-        behavior.updateVisibility();
-    }
-
-        // Event Listeners
         heightControl.addEventListener('input', function() {
             content.style.height = this.value + 'px' || 'auto';
-            moreButtonHiddenByScroll = false;
             updateButtonVisibility();
         });
 
         window.addEventListener('resize', updateButtonVisibility);
 
         window.addEventListener('scroll', function() {
-        const behavior = currentVersion === 1 ? buttonBehaviors.version1 : 
-                        currentVersion === 2 ? buttonBehaviors.version2 :
-                        buttonBehaviors.version3;
-        behavior.handleScroll();
-    });
+            const behavior = currentVersion === 1 ? buttonBehaviors.version1 : 
+                            currentVersion === 2 ? buttonBehaviors.version2 :
+                            currentVersion === 3 ? buttonBehaviors.version3 :
+                            currentVersion === 4 ? buttonBehaviors.version4 :
+                            currentVersion === 5 ? buttonBehaviors.version5 :
+                            buttonBehaviors.version6;
+            if (behavior && typeof behavior.handleScroll === 'function') {
+                behavior.handleScroll();
+            }
+        });
 
         regenerateBtn.addEventListener('click', function() {
-            moreButtonHiddenByScroll = false;
             isTopButtonActive = false;
             completedTopAction = false;
-            version2ButtonUsed = false; 
+            version2ButtonUsed = false;
+            version5ButtonHiddenDueToOverlap = false;
+            v6IsShiftedDueToOverlap = false;
             lastScrollTop = window.scrollY;
             updateButtonVisibility();
         });
 
         moreBtn.addEventListener('click', function() {
-        const behavior = currentVersion === 1 ? buttonBehaviors.version1 : 
-                        currentVersion === 2 ? buttonBehaviors.version2 :
-                        buttonBehaviors.version3;
-        behavior.scrollBehavior();
-    });
+            const behavior = currentVersion === 1 ? buttonBehaviors.version1 : 
+                            currentVersion === 2 ? buttonBehaviors.version2 :
+                            currentVersion === 3 ? buttonBehaviors.version3 :
+                            currentVersion === 4 ? buttonBehaviors.version4 :
+                            currentVersion === 5 ? buttonBehaviors.version5 :
+                            buttonBehaviors.version6;
+            if (behavior && typeof behavior.scrollBehavior === 'function') {
+                behavior.scrollBehavior();
+            }
+        });
 
         version1Btn.addEventListener('click', () => switchToVersion(1));
         version2Btn.addEventListener('click', () => switchToVersion(2));
         version3Btn.addEventListener('click', () => switchToVersion(3));
+        version4Btn.addEventListener('click', () => switchToVersion(4));
+        version5Btn.addEventListener('click', () => switchToVersion(5));
+        version6Btn.addEventListener('click', () => switchToVersion(6));
 
+        switchToVersion(1);
 
-        // Initial setup
-        updateButtonVisibility();
+        toggleMcqViewBtn.addEventListener('click', function() {
+            mcqViewActive = !mcqViewActive;
+            if (mcqViewActive) {
+                originalContentDiv.style.display = 'none';
+                mcqContentDiv.style.display = 'block';
+            } else {
+                originalContentDiv.style.display = 'block';
+                mcqContentDiv.style.display = 'none';
+            }
+            updateButtonVisibility();
+        });
+
+        const eliminateChoiceBtns = document.querySelectorAll('.eliminate-choice-btn');
+        eliminateChoiceBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const optionDiv = this.closest('.mcq-option');
+                if (optionDiv && !optionDiv.classList.contains('dimmed-choice')) {
+                    optionDiv.classList.add('dimmed-choice');
+                }
+            });
+        });
     });
 </script>
 
